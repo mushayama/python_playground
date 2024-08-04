@@ -1,132 +1,63 @@
 from parking_slot import ParkingSlot
-from vehicles import VehicleType, Bike
+from vehicles import VehicleType, Vehicle
+from display_board import DisplayBoard, DisplayType
+from typing import Optional
 
 class ParkingFloor:
-    __id = None
-    __slots = None
-    __totalTruckSlots = None
-    __totalBikeSlots = None
-    __totalCarSlots = None
-    __occupiedTruckSlots = None
-    __occupiedBikeSlots = None
-    __occupiedCarSlots = None
+    __floorId: str = None
+    __parkingSlots: dict[VehicleType,list[ParkingSlot]] = None
+    __noOfFreeSlots: dict[VehicleType, int] = None
 
-    def __init__(self, floorId, numberOfSlots) -> None:
-        self.__id = floorId
-        self.__slots = []
-        self.__totalTruckSlots = 0
-        self.__totalBikeSlots = 0
-        self.__totalCarSlots = 0
-        self.__occupiedTruckSlots = 0
-        self.__occupiedBikeSlots = 0
-        self.__occupiedCarSlots = 0
+    def __init__(self, floorId: str, numberOfSlots: int) -> None:
+        self.__floorId = floorId
+        self.__parkingSlots = {}
+        self.__noOfFreeSlots = {}
+        for type in VehicleType:
+            self.__parkingSlots[type]=[]
+            self.__noOfFreeSlots[type]=0
 
-        self.addSlots(numberOfSlots)
+        self.__addSlots(numberOfSlots)
+
+        self.displayBoard: DisplayBoard = DisplayBoard()
     
-    def addSlots(self, numberOfSlots):
-        slotsSoFar = len(self.__slots)
-        for i in range(1, numberOfSlots+1):
-            self.__slots.append(ParkingSlot(self.__id+'_'+str(slotsSoFar+i)))
+    def __addSlots(self, numberOfSlots: int) -> None:
+        for slotId in range(1, numberOfSlots+1):
+            newSlot = ParkingSlot(self.__floorId+'_'+str(slotId))
+            self.__parkingSlots[newSlot.getSlotType()].append(newSlot)
         
-        self.__setTotalSlots();
+        self.__setNoOfFreeSlots();
 
-    def __setTotalSlots(self):
-        totalSlots = len(self.__slots)
-        
-        if totalSlots>0:
-            self.__totalTruckSlots = 1
-            if totalSlots==2:
-                self.__totalBikeSlots = 1
-            elif totalSlots>=3:
-                self.__totalBikeSlots = 2
-                self.__totalCarSlots = totalSlots-3
+    def __setNoOfFreeSlots(self) -> None:
+        for type in VehicleType:
+            self.__noOfFreeSlots[type] = len(self.__parkingSlots[type])
     
-    def getTotalSlots(self):
-        return len(self.__slots)
+    def getNoOfFreeSlots(self, slotType: VehicleType) -> int:
+        return self.__noOfFreeSlots[slotType]
     
-    def getTotalTruckSlots(self):
-        return self.__totalTruckSlots
+    def getFloorId(self) -> str:
+        return self.__floorId
     
-    def getTotalBikeSlots(self):
-        return self.__totalBikeSlots
+    def getParkingSlots(self, slotType: VehicleType) -> list[ParkingSlot]:
+        return self.__parkingSlots[slotType]
     
-    def getTotalCarSlots(self):
-        return self.__totalCarSlots
+    def display(self, displayType: DisplayType, slotType: VehicleType) -> None:
+        self.displayBoard.displayMessage(self.getFloorId().split('_')[1], self.__parkingSlots[slotType], self.__noOfFreeSlots[slotType], displayType, slotType)
     
-    def getOccupiedTruckSlots(self):
-        return self.__occupiedTruckSlots
+    def park(self, vehicle: Vehicle) -> Optional[str]:
+        for slot in self.__parkingSlots[vehicle.getVehicleType()]:
+            if slot.getIsSlotFree():
+                ticket = slot.park(vehicle)
+                if ticket!=None:
+                    self.__noOfFreeSlots[vehicle.getVehicleType()]-=1;
+                return ticket
     
-    def getOccupiedBikeSlots(self):
-        return self.__occupiedBikeSlots
-    
-    def getOccupiedCarSlots(self):
-        return self.__occupiedCarSlots
-    
-    def adjustOccupiedSlots(self, type, change=1):
-        if type == VehicleType.TRUCK:
-            self.__occupiedTruckSlots+=change
-        elif type == VehicleType.BIKE:
-            self.__occupiedBikeSlots+=change
-        else:
-            self.__occupiedCarSlots+=change
-    
-    def getFreeSlotCount(self, type):
-        if type == VehicleType.TRUCK:
-            return self.getTotalTruckSlots()-self.getOccupiedTruckSlots()
-        elif type == VehicleType.BIKE:
-            return self.getTotalBikeSlots()-self.getOccupiedBikeSlots()
-        elif type == VehicleType.CAR:
-            return self.getTotalCarSlots()-self.getOccupiedCarSlots()
-        else:
-            raise Exception("Invalid vehicle type")
-    
-    def displayFreeCount(self, type):
-        floorNumber = int(self.__id.split('_')[-1])
-        print(f"No. of free slots for {type.name} on Floor {floorNumber}: {self.getFreeSlotCount(type)}")
-
-    def getSlotIdsByOccupancy(self, type, occupied=False):
-        slotIds = ""
-        if type == VehicleType.TRUCK:
-            if self.getTotalTruckSlots() != 0 and self.__slots[0].getOccupancy()==occupied:
-                slotIds = slotIds + " 1"
-        elif type == VehicleType.BIKE:
-            for i in range(self.getTotalBikeSlots()):
-                if self.__slots[1+i].getOccupancy()==occupied:
-                    slotIds = slotIds + " " + str(2+i)
-        elif type == VehicleType.CAR:
-            for i in range(self.getTotalCarSlots()):
-                if self.__slots[3+i].getOccupancy()==occupied:
-                    slotIds = slotIds + " " + str(4+i)
-        else:
-            raise Exception("Inavlid vehicle type")
-        return slotIds
-    
-    def displaySlots(self, type, occupied=False):
-        floorNumber = int(self.__id.split('_')[-1])
-        print(f"Free slots for {type.name} on Floor {floorNumber}:{self.getSlotIdsByOccupancy(type, occupied)}")
-    
-    def park(self, vehicle):
-        if self.getFreeSlotCount(vehicle.getType())==0:
-            raise Exception("no free slot")
-        
-        ticket = ""
-        for i in range(self.getTotalSlots()):
-            if vehicle.getType()==self.__slots[i].getType() and self.__slots[i].getOccupancy()==False:
-                ticket = self.__slots[i].park(vehicle)
-                self.adjustOccupiedSlots(vehicle.getType())
-                break
-        return ticket
-    
-    def unpark(self, ticket):
-        slotId = int(ticket.split('_')[-1])
-        if slotId>self.getTotalSlots():
-            return "Invalid Ticket from floor"
-        vehicle = self.__slots[slotId-1].unpark(ticket)
-        self.adjustOccupiedSlots(vehicle.getType(),-1)
-        return vehicle
-
-
-
-    
-
-    
+    def unpark(self, ticket: str) -> Optional[Vehicle]:
+        for type in VehicleType:
+            for slot in self.__parkingSlots[type]:
+                if slot.getSlotId()==ticket:
+                    vehicle = slot.unpark(ticket)
+                    if vehicle!=None:
+                        self.__noOfFreeSlots[type]+=1
+                    return vehicle
+        print("Invalid ticket")
+        return None

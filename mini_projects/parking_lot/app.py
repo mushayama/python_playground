@@ -1,5 +1,7 @@
 from parking_lot import ParkingLot
-from vehicles import Car, Bike, Truck, VehicleType
+from vehicles import Vehicle, VehicleType
+from display_board import DisplayType
+from typing import Optional, get_args
 
 def displayCommands():
     print("You can enter one of the following commands at a time:")
@@ -11,73 +13,57 @@ def displayCommands():
     print("exit")
     print()
 
-def createParkingLot(command):
-    attributes = command.split()
-    if(len(attributes)!=4 or int(attributes[2])>100 or int(attributes[2])<0 or int(attributes[3])>100 or int(attributes[3])<0):
+def createParkingLot(args: list[str]) -> Optional[ParkingLot]:
+    if(len(args)!=4 or int(args[2])>100 or int(args[2])<0 or int(args[3])>100 or int(args[3])<0):
         print("Invalid Command")
         return None
     
-    return ParkingLot(attributes[1], int(attributes[2]), int(attributes[3]))
+    return ParkingLot(args[1], int(args[2]), int(args[3]))
 
-def parkVehicle(parkingLot, command):
+def parkVehicle(parkingLot: Optional[ParkingLot], args) -> None:
     if parkingLot==None:
         print("Create a parking lot first")
         return
-    attributes = command.split()
-    if len(attributes)!=4 or not(attributes[1]=="CAR" or attributes[1]=="BIKE" or attributes[1]=="TRUCK"):
+    
+    if len(args)!=4 or not(args[1] in VehicleType._value2member_map_):
         print("Invalid Input")
         return
-    _, vehicleType, regNo, color = command.split()
-    vehicle=None
-    if attributes[1]=="CAR":
-        vehicle=Car(regNo, color)
-    elif attributes[1]=="BIKE":
-        vehicle = Bike(regNo, color)
-    else:
-        vehicle = Truck(regNo, color)
+    
+    _, vehicleType, regNo, color = args
+
+    vehicle=Vehicle(regNo, color, VehicleType(vehicleType))
     
     if vehicle!=None:
         ticket = parkingLot.park(vehicle)
 
-        if ticket == "Parking Lot Full":
-            print(ticket)
-        else:
+        if ticket !=None:
             print(f"Parked Vehicle. Ticket ID: {ticket}")
 
-def unparkVehicle(parkingLot, command):
+def unparkVehicle(parkingLot: Optional[ParkingLot], args) -> None:
     if parkingLot==None:
         print("Create a parking lot first")
         return
-    attributes = command.split()
 
-    if len(attributes)!=2:
+    if len(args)!=2:
         print("Invalid Input")
         return
     
-    print(attributes[1])
-    vehicle = parkingLot.unpark(attributes[1])
-    print(vehicle)
-    # print(f"Unparked vehicle with Registration Number: {vehicle.getResgistrationNo()} and color {vehicle.getColor()}")
+    vehicle = parkingLot.unpark(args[1])
+    if vehicle!=None:
+        print(f"Unparked vehicle with Registration Number: {vehicle.getVehicleRegNo()} and color {vehicle.getVehicleColor()}")
 
-def display(parkingLot, command):
+def display(parkingLot: Optional[ParkingLot], args: list[str]) -> None:
     if parkingLot==None:
         print("Create a parking lot first")
         return
-    attributes = command.split()
 
-    if len(attributes)!=3 or not(attributes[1]=="free_count" or attributes[1]=="free_slots" or attributes[1]=="occupied_slots"):
+    if len(args)!=3 or not(args[1] in get_args(DisplayType)) or not(args[2] in VehicleType._value2member_map_):
         print("invalid Input")
         return
     
-    vehicleType = None
-    if attributes[2]=="CAR":
-        vehicleType = VehicleType.CAR
-    elif attributes[2]=="TRUCK":
-        vehicleType = VehicleType.TRUCK
-    elif attributes[2]=="BIKE":
-        vehicleType = VehicleType.BIKE
+    vehicleType = VehicleType(args[2])
     
-    parkingLot.display(attributes[1], vehicleType)
+    parkingLot.display(args[1], vehicleType)
 
 def __main__():
     print("Welcome to our parking lot system")
@@ -88,18 +74,18 @@ def __main__():
     while(True):
         command = input("Enter your command: ")
 
-        commandType= command.split()[0]
+        commandAttributes = command.split()
         if command=="exit":
             break
-        elif commandType=="create_parking_lot":
-            parkingLot = createParkingLot(command)
-        elif commandType=="park_vehicle":
-            parkVehicle(parkingLot, command)
-        elif commandType=="unpark_vehicle":
-            unparkVehicle(parkingLot, command)
-        elif commandType=="display":
-            display(parkingLot, command)
-        elif commandType=="C":
+        elif commandAttributes[0]=="create_parking_lot":
+            parkingLot = createParkingLot(commandAttributes)
+        elif commandAttributes[0]=="park_vehicle":
+            parkVehicle(parkingLot, commandAttributes)
+        elif commandAttributes[0]=="unpark_vehicle":
+            unparkVehicle(parkingLot, commandAttributes)
+        elif commandAttributes[0]=="display":
+            display(parkingLot, commandAttributes)
+        elif command=="C":
             displayCommands()
         else:
             print("Invalid Input")
