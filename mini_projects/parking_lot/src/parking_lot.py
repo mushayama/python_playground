@@ -1,6 +1,6 @@
-from parking_floor import ParkingFloor
-from vehicles import VehicleType, Vehicle
-from display_board import DisplayType
+from .parking_floor import ParkingFloor
+from .vehicles import VehicleType, Vehicle
+from .display_board import DisplayType
 from typing import Optional
 
 class ParkingLot:

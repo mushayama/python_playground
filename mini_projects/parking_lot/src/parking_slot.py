@@ -1,4 +1,4 @@
-from vehicles import VehicleType, Vehicle
+from .vehicles import VehicleType, Vehicle
 from typing import Optional
 
 class ParkingSlot:

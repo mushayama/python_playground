@@ -1,6 +1,6 @@
-from parking_lot import ParkingLot
-from vehicles import Vehicle, VehicleType
-from display_board import DisplayType
+from src.parking_lot import ParkingLot
+from src.vehicles import Vehicle, VehicleType
+from src.display_board import DisplayType
 from typing import Optional, get_args
 
 def displayCommands():
