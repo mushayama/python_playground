@@ -37,9 +37,6 @@ class ParkingFloor:
     def getFloorId(self) -> str:
         return self.__floorId
     
-    # def getParkingSlots(self, slotType: VehicleType) -> list[ParkingSlot]:
-    #     return self.__parkingSlots[slotType]
-    
     def display(self, displayType: DisplayType, slotType: VehicleType) -> None:
         self.displayBoard.displayMessage(self.getFloorId().split('_')[1], self.__parkingSlots[slotType], self.__noOfFreeSlots[slotType], displayType, slotType)
     
