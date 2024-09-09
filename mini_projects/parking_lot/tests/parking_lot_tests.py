@@ -6,7 +6,7 @@ from ..src.parking_lot import ParkingLot
 from ..src.parking_floor import ParkingFloor
 from ..src.parking_slot import ParkingSlot
 from ..src.vehicles import Vehicle, VehicleType
-from ..src.display_board import DisplayBoard, DisplayType
+from ..src.display_board import DisplayBoard
 
 '''
 Run command:

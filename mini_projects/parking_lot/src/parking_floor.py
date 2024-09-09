@@ -7,6 +7,7 @@ class ParkingFloor:
     __floorId: str = None
     __parkingSlots: dict[VehicleType,list[ParkingSlot]] = None
     __noOfFreeSlots: dict[VehicleType, int] = None
+    __displayBoard: DisplayBoard = None
 
     def __init__(self, floorId: str, numberOfSlots: int) -> None:
         self.__floorId = floorId
@@ -18,7 +19,7 @@ class ParkingFloor:
 
         self.__addSlots(numberOfSlots)
 
-        self.displayBoard: DisplayBoard = DisplayBoard()
+        self.__displayBoard: DisplayBoard = DisplayBoard()
     
     def __addSlots(self, numberOfSlots: int) -> None:
         for slotId in range(1, numberOfSlots+1):
@@ -38,7 +39,7 @@ class ParkingFloor:
         return self.__floorId
     
     def display(self, displayType: DisplayType, slotType: VehicleType) -> None:
-        self.displayBoard.displayMessage(self.getFloorId().split('_')[1], self.__parkingSlots[slotType], self.__noOfFreeSlots[slotType], displayType, slotType)
+        self.__displayBoard.displayMessage(self.getFloorId().split('_')[1], self.__parkingSlots[slotType], self.__noOfFreeSlots[slotType], displayType, slotType)
     
     def park(self, vehicle: Vehicle) -> Optional[str]:
         for slot in self.__parkingSlots[vehicle.getVehicleType()]:
