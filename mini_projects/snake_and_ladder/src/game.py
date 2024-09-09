@@ -3,6 +3,7 @@ from .dice import Dice
 from .player import Player
 from .enums import InputType, BoardEntityType
 from queue import Queue
+from pathlib import Path
 
 class Game:
     __board: Board= None
@@ -40,17 +41,42 @@ class Game:
             command = input("Enter "+str(i)+" player name: ").strip()
             self.__players.put(Player(command))
     
-    def __createGameFromFile(self, filepath: str) -> None:
-        #TO-DO
-        pass
+    def __createGameFromFile(self, filepath: str="") -> None:
+        if filepath=="":
+            path = Path(__file__).parent / "../assets/board.txt"
+        else: path = Path(filepath)
+        with path.open("r") as file:
+            lines = file.readlines()
+            i=0;
+            snakesAndLadders=[]
+
+            numberOfSnakes=int(lines[i].strip())
+            i+=1
+            for _ in range(numberOfSnakes):
+                command = lines[i].strip().split()
+                i+=1
+                snakesAndLadders.append((int(command[0]), int(command[1]), BoardEntityType.SNAKE))
+
+            numberOfLadders=int(lines[i].strip())
+            i+=1
+            for _ in range(numberOfLadders):
+                command = lines[i].strip().split()
+                i+=1
+                snakesAndLadders.append((int(command[0]), int(command[1]), BoardEntityType.LADDER))
+            
+            self.__board = Board(self.__MAX_POSITION, snakesAndLadders)
+
+            numberOfPlayers = int(lines[i].strip())
+            i+=1
+            for _ in range(numberOfPlayers):
+                self.__players.put(Player(lines[i].strip()))
+                i+=1
     
     def playGame(self) -> None:
         ranking = 1
         while(self.__players.qsize()>1):
             player = self.__players.get()
-            roll = 0
-            for dice in self.__dices:
-                roll+=dice.getRoll()
+            roll = self.__getRoll()
             
             newPosition = self.__board.getNewPosition(player.getPosition(), roll)
 
@@ -63,5 +89,24 @@ class Game:
                 self.__players.put(player)
         print("Game ends")
         return None
+    
+    def __getRoll(self) -> int:
+        roll=0
+        maxRoll = 0
+        for dice in self.__dices:
+            maxRoll+=dice.getSides()
+            roll+=dice.getRoll()
+        
+        rollCount=1
+        while roll%maxRoll==0 and rollCount<3:
+            for dice in self.__dices:
+                roll+=dice.getRoll()
+                rollCount+=1
+        
+        if roll==3*maxRoll:
+            roll=0
+        
+        return roll
+
 
             

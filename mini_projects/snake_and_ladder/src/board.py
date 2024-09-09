@@ -21,6 +21,12 @@ class Board:
                 print("Error: Cannot initialise the following: ", entity)
         return
     
+    def getMaxPosition(self) -> int:
+        return self.__maxPosition
+    
+    def getSnakesAndLadders(self) -> dict[int, SnakeOrLadder]:
+        return self.__snakesAndLadders
+    
     def getNewPosition(self, position: int, roll: int) -> int:
         if position+roll>self.__maxPosition: 
            return position

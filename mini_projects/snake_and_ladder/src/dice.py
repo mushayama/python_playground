@@ -8,3 +8,6 @@ class Dice:
 
     def getRoll(self) -> int:
         return randint(1, self.__sides)
+    
+    def getSides(self) ->int:
+        return self.__sides
