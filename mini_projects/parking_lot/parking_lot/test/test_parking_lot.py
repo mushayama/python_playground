@@ -2,11 +2,11 @@ import unittest
 import unittest.mock
 import builtins
 import contextlib, io
-from ..parking_lot import ParkingLot
-from ..parking_floor import ParkingFloor
-from ..parking_slot import ParkingSlot
-from ..vehicles import Vehicle, VehicleType
-from ..display_board import DisplayBoard
+from parking_lot.parking_lot import ParkingLot
+from parking_lot.parking_floor import ParkingFloor
+from parking_lot.parking_slot import ParkingSlot
+from parking_lot.vehicles import Vehicle, VehicleType
+from parking_lot.display_board import DisplayBoard
 
 '''
 Run command:
