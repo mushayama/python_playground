@@ -1,9 +1,11 @@
 # Parking Lot System
+
 This is a parking lot system created within the following constraints:
 
 I found the question statement [here](https://workat.tech/machine-coding/practice/design-parking-lot-qm6hwq4wkhp8)
 
 ## The functions that the parking lot system can do:
+
     1.  Create the parking lot.
         - Add floors to the parking lot.
         - Add a parking lot slot to any of the floors.
@@ -36,6 +38,7 @@ I found the question statement [here](https://workat.tech/machine-coding/practic
             Example: PR1234_2_5 (denotes 5th slot of 2nd floor of parking lot PR1234)
 
 ## Input Format
+
     Possible commands:
 
     -   create_parking_lot <parking_lot_id> <no_of_floors> <no_of_slots_per_floor>
@@ -46,38 +49,54 @@ I found the question statement [here](https://workat.tech/machine-coding/practic
     -   exit
 
 ## Output Format
-    
+
 ### create_parking_lot
+
 Created parking lot with <no_of_floors> floors and <no_of_slots_per_floor> slots per floor
 
 ### park_vehicle
+
 Parked vehicle. Ticket ID: <ticket_id>
 Print "Parking Lot Full" if slot is not available for that vehicle type.
 
 ### unpark_vehicle
+
 Unparked vehicle with Registration Number: <reg_no> and Color: <color>
 Print "Invalid Ticket" if ticket is invalid or parking slot is not occupied.
 
 ### display free_count <vehicle_type>
+
 No. of free slots for <vehicle_type> on Floor <floor_no>: <no_of_free_slots>
 The above will be printed for each floor.
 
 ### display free_slots <vehicle_type>
+
 Free slots for <vehicle_type> on Floor <floor_no>: <comma_separated_values_of_slot_nos>
 The above will be printed for each floor.
 
 ### display occupied_slots <vehicle_type>
+
 Occupied slots for <vehicle_type> on Floor <floor_no>: <comma_separated_values_of_slot_nos>
 The above will be printed for each floor.
 
 ## Running
+
 ### To run the testcases run:
 
-`python3 -m unittest mini_projects/parking_lot/tests/parking_lot_tests.py`
-
-or such from an appropriate directory
+```bash
+python3 -m unittest parking_lot/test/test_parking_lot.py
+```
 
 ### To run the parking lot experience:
 
-run the app.py file
+run the main.py file in the project directory
 
+```bash
+python3 main.py
+```
+
+or run parking_lot directory as a package
+
+```bash
+python3 -m parkin_lot
+```
