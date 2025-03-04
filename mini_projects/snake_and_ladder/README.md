@@ -1,9 +1,11 @@
 # Snake and Ladder
+
 This is a snake and ladder game created within the following constraints:
 
 I found the question statement [here](https://workat.tech/machine-coding/practice/snake-and-ladder-problem-zgtac9lxwntg)
 
 ## Problem Statement:
+
     Create a snake and ladder application. The application should take as input (from the command line or a file):
 
     Number of snakes (s) followed by s lines each containing 2 numbers denoting the head and tail positions of the snake.
@@ -32,13 +34,14 @@ I found the question statement [here](https://workat.tech/machine-coding/practic
 - There could be another snake/ladder at the tail of the snake or the end position of the ladder and the piece should go up/down accordingly.
 
 ## Assumptions you can take apart from those already mentioned in rules
-    
+
 - There won’t be a snake at 100.
 - There won’t be multiple snakes/ladders at the same start/head point.
 - It is possible to reach 100, i.e., it is possible to win the game.
 - Snakes and Ladders do not form an infinite loop.
 
 ## Expectations
+
 - Make sure that you have a working and demonstrable code
 - Make sure that the code is functionally correct
 - Code should be modular and readable
@@ -50,6 +53,7 @@ I found the question statement [here](https://workat.tech/machine-coding/practic
 - No need to create a GUI
 
 ## Optional Requirements
+
 Please do these only if you’ve time left. You can write your code such that these could be accommodated without changing your code much.
 
 - The game is played with two dice instead of 1 and so the total dice value could be between 2 to 12 in a single move.
@@ -58,15 +62,24 @@ Please do these only if you’ve time left. You can write your code such that th
 - On getting a 6, you get another turn and on getting 3 consecutive 6s, all the three of those get cancelled.
 - On starting the application, the snakes and ladders should be created programmatically without any user input, keeping in mind the constraints mentioned in rules.
 
-
 ## Running
+
 ### To run the testcases run:
 
-`python3 -m unittest mini_projects/snake_and_ladder/tests/test_snake_and_ladder.py`
+```bash
+python3 -m unittest snake_and_ladder/test/test_snake_and_ladder.py
+```
 
-or such from an appropriate directory
+### To run the snake and ladder game experience:
 
-### To run the parking lot experience:
+run the main.py file in the project directory
 
-run the app.py file
+```bash
+python3 main.py
+```
 
+or run snake_and_ladder directory as a package
+
+```bash
+python3 -m snake_and_ladder
+```

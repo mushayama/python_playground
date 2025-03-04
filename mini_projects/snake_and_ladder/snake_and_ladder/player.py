@@ -5,13 +5,13 @@ class Player:
     def __init__(self, name: str) -> None:
         self.__name=name
         self.__position=0
-    
-    def getName(self) -> str:
+
+    def get_name(self) -> str:
         return self.__name
 
-    def getPosition(self) -> int:
+    def get_position(self) -> int:
         return self.__position
-    
-    def setPosition(self, position: int) -> None:
+
+    def set_position(self, position: int) -> None:
         self.__position = position
         return None

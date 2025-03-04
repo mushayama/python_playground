@@ -12,13 +12,13 @@ class SnakeOrLadder(ABC):
         self._type=type
 
     @abstractmethod
-    def getType(self) -> BoardEntityType:
+    def get_type(self) -> BoardEntityType:
         pass
-    
+
     @abstractmethod
-    def getStart(self) -> int:
+    def get_start(self) -> int:
         pass
-    
+
     @abstractmethod
-    def getEnd(self) -> int:
+    def get_end(self) -> int:
         pass

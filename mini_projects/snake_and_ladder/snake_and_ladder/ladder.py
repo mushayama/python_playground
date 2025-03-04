@@ -5,11 +5,11 @@ class Ladder(SnakeOrLadder):
     def __init__(self, start: int, end: int) -> None:
         super().__init__(start, end, BoardEntityType.LADDER)
 
-    def getEnd(self) -> int:
+    def get_end(self) -> int:
         return self._end;
 
-    def getType(self) -> BoardEntityType:
+    def get_type(self) -> BoardEntityType:
         return self._type
-    
-    def getStart(self) -> int:
+
+    def get_start(self) -> int:
         return self._start

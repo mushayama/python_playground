@@ -6,8 +6,8 @@ class Dice:
     def __init__(self, sides: int) -> None:
         self.__sides = sides
 
-    def getRoll(self) -> int:
+    def get_roll(self) -> int:
         return randint(1, self.__sides)
-    
-    def getSides(self) ->int:
+
+    def get_sides(self) ->int:
         return self.__sides

@@ -8,7 +8,7 @@ class SnakeOrLadderFactory:
     def __init__(self) -> None:
         pass
 
-    def createSnakeOrLadder(self, start:int, end:int, type: BoardEntityType) -> Optional[SnakeOrLadder]:
+    def create_snake_or_ladder(self, start:int, end:int, type: BoardEntityType) -> Optional[SnakeOrLadder]:
         if type==BoardEntityType.LADDER:
             return Ladder(start,end)
         elif type==BoardEntityType.SNAKE:
