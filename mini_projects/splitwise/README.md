@@ -63,4 +63,14 @@ Please do these only if you’ve time left. You can write your code such that th
 
 ### To run the splitwise experience:
 
-run the app.py file
+run the main.py file in the project directory
+
+```bash
+python3 main.py
+```
+
+or run splitwise directory as a package
+
+```bash
+python3 -m splitwise
+```
